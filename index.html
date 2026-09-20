@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名侦探柯南剧场版 - 官方网站</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700;900&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --navy: #0a1628; --navy-light: #1a2744; --red: #e63946;
+    --red-glow: #ff4757; --blue: #1e90ff; --gold: #ffd700;
+    --white: #f0f4f8; --gray: #2d3748;
+}
+
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background-color: var(--navy); color: var(--white); overflow-x: hidden;
+}
+
+nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(10, 22, 40, 0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(230, 57, 70, 0.3); padding: 0 40px;
+    transition: all 0.3s ease;
+}
+nav.scrolled { padding: 8px 40px; box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
+.nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon {
+    width: 45px; height: 45px; background: linear-gradient(135deg, var(--red), #c62828);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: white; box-shadow: 0 0 20px rgba(230,57,70,0.5); position: relative;
+}
+.logo-icon::before { content: '◉'; position: absolute; font-size: 10px; opacity: 0.5; }
+.logo-text { font-size: 22px; font-weight: 900; background: linear-gradient(135deg, var(--red), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.nav-links { display: flex; list-style: none; gap: 8px; }
+.nav-links a { color: rgba(240,244,248,0.7); text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.3s ease; position: relative; }
+.nav-links a:hover { color: var(--white); background: rgba(230,57,70,0.15); }
+.nav-links a.active { color: var(--white); background: rgba(230,57,70,0.25); }
+.nav-links a.active::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:20px; height:2px; background:var(--red); border-radius:1px; }
+
+.search-bar { max-width: 1400px; margin: 0 auto; padding: 20px 40px 0; position: relative; z-index: 10; }
+.search-container { position: relative; max-width: 600px; margin: 0 auto; }
+.search-input {
+    width: 100%; padding: 14px 20px 14px 50px; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: var(--white);
+    font-size: 15px; font-family: inherit; outline: none; transition: all 0.3s ease;
+}
+.search-input::placeholder { color: rgba(240,244,248,0.3); }
+.search-input:focus { border-color: var(--red); background: rgba(230,57,70,0.08); box-shadow: 0 0 20px rgba(230,57,70,0.1); }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 18px; opacity: 0.4; }
+.filter-tabs { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.filter-tab { padding: 6px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: rgba(240,244,248,0.5); cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.3s ease; }
+.filter-tab:hover, .filter-tab.active { background: rgba(230,57,70,0.2); border-color: var(--red); color: var(--white); }
+
+.hero { height: 100vh; min-height: 700px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(30,144,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, rgba(230,57,70,0.06) 0%, transparent 50%), linear-gradient(180deg, var(--navy) 0%, #0d1a2d 50%, #0a1628 100%); }
+.hero-bg::after { content:''; position:absolute; inset:0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.hero-content { position: relative; z-index: 10; text-align: center; max-width: 900px; padding: 0 20px; }
+.hero-badge { display: inline-block; padding: 6px 20px; background: rgba(230,57,70,0.2); border: 1px solid rgba(230,57,70,0.4); border-radius: 50px; font-size: 13px; color: var(--red-glow); margin-bottom: 24px; letter-spacing: 2px; animation: fadeInDown 1s ease; }
+.hero h1 { font-size: clamp(36px,6vw,72px); font-weight: 900; line-height: 1.2; margin-bottom: 20px; animation: fadeInUp 1s ease 0.2s both; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--red), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: clamp(16px,2vw,20px); color: rgba(240,244,248,0.6); max-width: 600px; margin: 0 auto 40px; line-height: 1.8; animation: fadeInUp 1s ease 0.4s both; }
+.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeInUp 1s ease 0.6s both; }
+.btn { padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none; display: inline-flex; align-items: center; gap: 8px; }
+.btn-primary { background: linear-gradient(135deg, var(--red), #c62828); color: white; box-shadow: 0 4px 25px rgba(230,57,70,0.4); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 35px rgba(230,57,70,0.6); }
+.btn-secondary { background: transparent; color: var(--white); border: 2px solid rgba(240,244,248,0.3); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-3px); }
+
+.floating-elements { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.float-magnifier { position: absolute; font-size: 60px; opacity: 0.08; animation: floatAround 20s infinite ease-in-out; }
+.float-magnifier:nth-child(1) { top:10%; left:5%; animation-delay:0s; }
+.float-magnifier:nth-child(2) { top:60%; right:5%; animation-delay:-5s; }
+.float-magnifier:nth-child(3) { bottom:10%; left:20%; animation-delay:-10s; }
+.float-magnifier:nth-child(4) { top:30%; right:15%; animation-delay:-15s; font-size:40px; }
+
+.movies-section { padding: 100px 40px; max-width: 1400px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-header h2 { font-size: clamp(28px,4vw,48px); font-weight: 900; margin-bottom: 16px; }
+.section-header h2 .line { display: block; width: 80px; height: 4px; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; margin: 20px auto; }
+.section-header p { color: rgba(240,244,248,0.5); font-size: 16px; max-width: 500px; margin: 0 auto; }
+.movies-count { text-align: center; margin-bottom: 30px; color: rgba(240,244,248,0.4); font-size: 14px; }
+.movies-count span { color: var(--red); font-weight: 700; }
+.movies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+
+.movie-card { background: linear-gradient(145deg, var(--navy-light), rgba(26,39,68,0.8)); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); cursor: pointer; position: relative; }
+.movie-card:hover { transform: translateY(-8px); border-color: rgba(230,57,70,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(230,57,70,0.1); }
+.movie-card.hidden { display: none; }
+
+.watch-btn { position: absolute; bottom:0; left:0; right:0; padding: 12px 24px; background: linear-gradient(135deg, var(--red), #c62828); color: white; text-align: center; text-decoration: none; font-size: 14px; font-weight: 700; z-index: 2; display: block; transition: all 0.3s ease; border-radius: 0 0 16px 16px; }
+.watch-btn:hover { background: linear-gradient(135deg, #c62828, var(--red)); transform: translateY(-2px); box-shadow: 0 -4px 15px rgba(230,57,70,0.3); }
+
+.movie-poster { width: 100%; height: 450px; position: relative; overflow: hidden; }
+.movie-poster-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; }
+.movie-poster-bg::after { content:''; position:absolute; inset:0; background: linear-gradient(180deg, transparent 50%, rgba(10,22,40,0.9) 100%); }
+.movie-card:hover .movie-poster-bg::after { background: linear-gradient(180deg, transparent 30%, rgba(10,22,40,0.95) 100%); }
+.movie-rating { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; color: var(--gold); z-index: 2; border: 1px solid rgba(255,215,0,0.3); }
+.movie-tag { position: absolute; top: 16px; left: 16px; background: var(--red); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; z-index: 2; }
+.play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0.8); width: 60px; height: 60px; background: rgba(230,57,70,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; opacity: 0; transition: all 0.3s ease; font-size: 24px; }
+.movie-card:hover .play-btn { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+.movie-info { padding: 24px; }
+.movie-number { font-size: 12px; color: var(--red); font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; }
+.movie-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+.movie-meta { display: flex; justify-content: space-between; align-items: center; color: rgba(240,244,248,0.4); font-size: 13px; }
+.movie-meta span { display: flex; align-items: center; gap: 4px; }
+
+.features-section { padding: 80px 40px; background: var(--navy-light); }
+.features-container { max-width: 1400px; margin: 0 auto; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
+.feature-card { text-align: center; padding: 40px 24px; background: rgba(255,255,255,0.03); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; }
+.feature-card:hover { background: rgba(230,57,70,0.05); border-color: rgba(230,57,70,0.2); transform: translateY(-4px); }
+.feature-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(230,57,70,0.2), rgba(30,144,255,0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.feature-card h3 { font-size: 18px; margin-bottom: 10px; font-weight: 700; }
+.feature-card p { color: rgba(240,244,248,0.5); font-size: 14px; line-height: 1.6; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--navy-light); border-radius: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(230,57,70,0.3); position: relative; animation: modalIn 0.3s ease; }
+@keyframes modalIn { from { opacity:0; transform: scale(0.9) translateY(20px); } to { opacity:1; transform: scale(1) translateY(0); } }
+.modal-close { position: absolute; top: 16px; right: 20px; background: rgba(0,0,0,0.5); border: none; color: var(--white); font-size: 28px; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; z-index: 10; }
+.modal-close:hover { background: var(--red); }
+.modal-poster { width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; font-size: 100px; position: relative; }
+.modal-poster::after { content:''; position: absolute; bottom:0; left:0; right:0; height: 150px; background: linear-gradient(transparent, var(--navy-light)); }
+.modal-body { padding: 24px 32px 32px; margin-top: -60px; position: relative; }
+.modal-body h2 { font-size: 28px; font-weight: 900; margin-bottom: 12px; }
+.modal-body .modal-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; color: rgba(240,244,248,0.6); font-size: 14px; }
+.modal-body .modal-meta span { display: flex; align-items: center; gap: 6px; }
+.modal-body .modal-desc { color: rgba(240,244,248,0.5); line-height: 1.8; font-size: 15px; margin-top: 16px; }
+.modal-body .modal-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 20px; }
+.detail-item { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; text-align: center; }
+.detail-item .detail-value { font-size: 18px; font-weight: 700; color: var(--gold); }
+.detail-item .detail-label { font-size: 12px; color: rgba(240,244,248,0.4); margin-top: 4px; }
+.modal-watch-btn { display: block; width: 100%; padding: 14px; margin-top: 24px; text-align: center; background: linear-gradient(135deg, var(--red), #c62828); color: white; text-decoration: none; font-size: 16px; font-weight: 700; border-radius: 12px; transition: all 0.3s ease; }
+.modal-watch-btn:hover { background: linear-gradient(135deg, #c62828, var(--red)); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230,57,70,0.4); }
+
+footer { padding: 60px 40px 30px; background: #060e1a; border-top: 1px solid rgba(255,255,255,0.05); }
+.footer-container { max-width: 1400px; margin: 0 auto; text-align: center; }
+.footer-logo { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, var(--red), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; }
+footer p { color: rgba(240,244,248,0.3); font-size: 14px; margin-top: 10px; }
+.footer-socials { display: flex; justify-content: center; gap: 16px; margin: 24px 0; }
+.footer-socials a { width: 44px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(240,244,248,0.5); text-decoration: none; transition: all 0.3s ease; }
+.footer-socials a:hover { background: var(--red); color: white; transform: translateY(-3px); }
+
+.fade-in { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeInUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+@keyframes floatAround { 0%,100%{transform:translate(0,0) rotate(0deg);} 25%{transform:translate(30px,-40px) rotate(90deg);} 50%{transform:translate(-20px,20px) rotate(180deg);} 75%{transform:translate(40px,30px) rotate(270deg);} }
+
+@media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { min-height: 600px; }
+    .movies-section { padding: 60px 20px; }
+    .movies-grid { grid-template-columns: 1fr; }
+    .movie-poster { height: 300px; }
+    .features-section { padding: 60px 20px; }
+    .search-bar { padding: 20px 20px 0; }
+    .modal-body { padding: 20px; }
+    .watch-btn { font-size: 13px; padding: 10px 16px; }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: rgba(230,57,70,0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(230,57,70,0.5); }
+
+.stats-bar { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; padding: 20px; }
+.stat-item { text-align: center; }
+.stat-item .stat-number { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, var(--red), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-item .stat-label { font-size: 13px; color: rgba(240,244,248,0.4); margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">🔍</div>
+                <span class="logo-text">名侦探柯南</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#movies">全部剧场版</a></li>
+                <li><a href="#features">特色</a></li>
+                <li><a href="#footer">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="floating-elements">
+            <div class="float-magnifier">🔍</div>
+            <div class="float-magnifier">🕵️</div>
+            <div class="float-magnifier">🎬</div>
+            <div class="float-magnifier">💎</div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">最新剧场版</div>
+            <h1>名侦探柯南<br><span class="highlight">剧场版</span></h1>
+            <p>每一次真相都隐藏在迷雾之下，每一次推理都通向惊心动魄的终点。全新剧场版，震撼来袭！</p>
+            <div class="hero-buttons">
+                <a href="#movies" class="btn btn-primary">🎬 观看预告</a>
+                <a href="#movies" class="btn btn-secondary">📖 剧情简介</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="movies-section" id="movies">
+        <div class="section-header fade-in">
+            <h2>剧场版系列</h2>
+            <span class="line"></span>
+            <p>从1997年至今，每一部都承载着不同的故事与感动</p>
+        </div>
+        <div class="search-bar fade-in">
+            <div class="search-container">
+                <span class="search-icon">🔎</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索电影名称、类型...">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="setFilter('全部')">全部</button>
+                <button class="filter-tab" onclick="setFilter('神作')">⭐ 神作</button>
+                <button class="filter-tab" onclick="setFilter('经典')">🏆 经典</button>
+                <button class="filter-tab" onclick="setFilter('重磅')">💣 重磅</button>
+                <button class="filter-tab" onclick="setFilter('热门')">🔥 热门</button>
+                <button class="filter-tab" onclick="setFilter('最新')">🆕 最新</button>
+            </div>
+        </div>
+        <div class="movies-count" id="movieCount">共找到 <span>29</span> / 29 部剧场版</div>
+        <div class="movies-grid" id="moviesGrid"></div>
+        <div class="stats-bar fade-in">
+            <div class="stat-item"><div class="stat-number">29</div><div class="stat-label">剧场版总数</div></div>
+            <div class="stat-item"><div class="stat-number">1997-2026</div><div class="stat-label">跨越年份</div></div>
+            <div class="stat-item"><div class="stat-number">¥1000亿+</div><div class="stat-label">累计票房</div></div>
+            <div class="stat-item"><div class="stat-number">1亿+</div><div class="stat-label">观影人次</div></div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="features-container">
+            <div class="section-header fade-in">
+                <h2>为什么选择柯南</h2>
+                <span class="line"></span>
+                <p>不仅仅是推理，更是关于友情、勇气与真相的传奇</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in"><div class="feature-icon">🧠</div><h3>极致推理</h3><p>每部剧场版都带来烧脑的推理体验，真相永远只有一个</p></div>
+                <div class="feature-card fade-in"><div class="feature-icon">🎭</div><h3>动人故事</h3><p>跨越29年的经典，每一部都触动人心</p></div>
+                <div class="feature-card fade-in"><div class="feature-icon">🎬</div><h3>震撼制作</h3><p>顶级动画制作水准，视觉盛宴不容错过</p></div>
+                <div class="feature-card fade-in"><div class="feature-icon">👥</div><h3>全球粉丝</h3><p>超过亿万粉丝的选择，跨越国界的热爱</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-logo">名侦探柯南</div>
+            <div class="footer-socials"><a href="#">🎵</a><a href="#">📺</a><a href="#">💬</a><a href="#">📷</a></div>
+            <p>© 2026 名侦探柯南剧场版官方网站 · 保留所有权利</p>
+            <p style="margin-top: 8px; font-size: 12px;">本网站仅供展示学习使用，版权归原作者所有</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+const movies = [
+    { id:1, number:"M1", title:"计时引爆摩天楼", year:1997, genre:"悬疑 / 动作", duration:"95分钟", rating:8.5, emoji:"🏢", tag:"经典", desc:"第一部剧场版，震撼登场！炸弹狂徒的威胁与柯南的极限推理。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:2, number:"M2", title:"第14个目标", year:1998, genre:"悬疑 / 推理", duration:"100分钟", rating:8.6, emoji:"🎯", tag:"经典", desc:"以扑克牌为媒介的连环杀人事件，谜团接连不断。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:3, number:"M3", title:"世纪末的魔术师", year:1999, genre:"悬疑 / 动作", duration:"100分钟", rating:8.8, emoji:"🎩", tag:"经典", desc:"怪盗基德重磅登场！罗曼诺夫王朝的传说与巨额宝藏。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:4, number:"M4", title:"瞳孔中的暗杀者", year:2000, genre:"悬疑 / 惊悚", duration:"100分钟", rating:8.5, emoji:"👁️", tag:"重磅", desc:"目暮警官遭遇暗杀，黑暗组织逼近。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:5, number:"M5", title:"通往天国的倒计时", year:2001, genre:"悬疑 / 动作", duration:"100分钟", rating:8.7, emoji:"⏱️", tag:"经典", desc:"摩天大楼即将爆炸，柯南与黑衣组织的正面对决。", url:"https://www.bilibili.com/bangumi/media/md28228945" },
+    { id:6, number:"M6", title:"贝克街的亡灵", year:2002, genre:"悬疑 / 科幻", duration:"108分钟", rating:9.1, emoji:"🕵️", tag:"神作", desc:"虚拟现实游戏与开膛手杰克的终极对决，被誉为系列神作。", url:"https://www.bilibili.com/bangumi/play/ss5234" },
+    { id:7, number:"M7", title:"迷宫的十字路口", year:2003, genre:"悬疑 / 动作", duration:"108分钟", rating:8.9, emoji:"🌸", tag:"经典", desc:"京都之旅，平次的初恋与消失的艺人之谜。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:8, number:"M8", title:"银翼的魔术师", year:2004, genre:"悬疑 / 科幻", duration:"109分钟", rating:8.6, emoji:"✈️", tag:"经典", desc:"怪盗基德与飞机的谜题，空中大作战。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:9, number:"M9", title:"水平线上的阴谋", year:2005, genre:"悬疑 / 冒险", duration:"108分钟", rating:8.4, emoji:"🚢", tag:"精彩", desc:"豪华游轮上的阴谋，柯南与元太的友情试炼。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:10, number:"M10", title:"侦探们的镇魂歌", year:2006, genre:"悬疑 / 动作", duration:"111分钟", rating:8.7, emoji:"🎵", tag:"经典", desc:"侦探团被困游乐园，勇敢面对生死考验。", url:"https://www.bilibili.com/bangumi/media/md28228951" },
+    { id:11, number:"M11", title:"绀碧之棺", year:2007, genre:"悬疑 / 冒险", duration:"107分钟", rating:8.5, emoji:"🏝️", tag:"精彩", desc:"海岛探险与传说中的宝藏，少年侦探团的勇气。", url:"https://www.bilibili.com/bangumi/media/md28228953" },
+    { id:12, number:"M12", title:"战栗的乐谱", year:2008, genre:"悬疑 / 音乐", duration:"116分钟", rating:8.6, emoji:"🎹", tag:"精彩", desc:"音乐厅的秘密与天才钢琴师的悲剧。", url:"https://www.bilibili.com/bangumi/media/md28228954" },
+    { id:13, number:"M13", title:"漆黑的追踪者", year:2009, genre:"悬疑 / 惊悚", duration:"112分钟", rating:8.8, emoji:"🔍", tag:"重磅", desc:"黑衣组织全面出击，松田警部牺牲，震撼人心。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:14, number:"M14", title:"天空的遇难船", year:2010, genre:"悬疑 / 科幻", duration:"103分钟", rating:8.4, emoji:"🚀", tag:"精彩", desc:"飞艇上的危机，机器人与人类的命运。", url:"https://www.bilibili.com/bangumi/media/md28228956" },
+    { id:15, number:"M15", title:"沉默的15分钟", year:2011, genre:"悬疑 / 动作", duration:"110分钟", rating:8.5, emoji:"🏔️", tag:"经典", desc:"新泻地震与隐藏的真相，震撼人心的悬疑。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:16, number:"M16", title:"第11个前锋", year:2012, genre:"悬疑 / 体育", duration:"111分钟", rating:8.5, emoji:"⚽", tag:"精彩", desc:"足球与炸弹的结合，柯南的足球推理。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:17, number:"M17", title:"绝海的侦探", year:2013, genre:"悬疑 / 动作", duration:"111分钟", rating:8.6, emoji:"⚓", tag:"精彩", desc:"虚构岛与神秘间谍，柯南的海外冒险。", url:"https://www.bilibili.com/bangumi/media/md28228959" },
+    { id:18, number:"M18", title:"异次元的狙击手", year:2014, genre:"悬疑 / 动作", duration:"111分钟", rating:8.7, emoji:"🎯", tag:"神作", desc:"纽约篇！赤井秀一与彭斯的巅峰对决。", url:"https://www.bilibili.com/bangumi/media/md28228960" },
+    { id:19, number:"M19", title:"业火的向日葵", year:2015, genre:"悬疑 / 艺术", duration:"113分钟", rating:8.8, emoji:"🌻", tag:"神作", desc:"梵高的名画与火焰中的对决，回忆篇重磅登场。", url:"https://www.bilibili.com/bangumi/media/md28228961" },
+    { id:20, number:"M20", title:"纯黑的噩梦", year:2016, genre:"悬疑 / 动作", duration:"112分钟", rating:8.7, emoji:"🖤", tag:"重磅", desc:"黑衣组织全面对决，赤井家族揭秘。", url:"https://www.bilibili.com/bangumi/media/md28228962" },
+    { id:21, number:"M21", title:"唐红的恋歌", year:2017, genre:"悬疑 / 爱情", duration:"112分钟", rating:8.9, emoji:"🏮", tag:"神作", desc:"和歌与红叶，服部平次与远山和叶的浪漫故事。", url:"https://www.bilibili.com/bangumi/media/md28228963" },
+    { id:22, number:"M22", title:"零的执行人", year:2018, genre:"悬疑 / 动作", duration:"111分钟", rating:9.0, emoji:"👨‍💼", tag:"神作", desc:"安室透全面登场，东京奥运会震撼巨制。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:23, number:"M23", title:"绀青之拳", year:2019, genre:"悬疑 / 动作", duration:"110分钟", rating:8.9, emoji:"🥊", tag:"神作", desc:"新加坡的冒险，基德与柯南的终极对决。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:24, number:"M24", title:"绯色的子弹", year:2021, genre:"悬疑 / 动作", duration:"111分钟", rating:8.8, emoji:"💥", tag:"重磅", desc:"赤井秀一登场！FBI与组织的最终决战。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:25, number:"M25", title:"万圣夜的新娘", year:2022, genre:"悬疑 / 动作", duration:"111分钟", rating:9.0, emoji:"🎃", tag:"神作", desc:"高木涉与佐藤美和子的爱情故事，震撼的连环爆炸案。", url:"https://www.bilibili.com/bangumi/media/md28368316" },
+    { id:26, number:"M26", title:"黑铁的鱼影", year:2023, genre:"悬疑 / 动作", duration:"110分钟", rating:9.1, emoji:"🐟", tag:"神作", desc:"灰原哀的过去揭晓，琴酒与柯南的宿命对决。", url:"https://www.bilibili.com/bangumi/play/ep819875" },
+    { id:27, number:"M27", title:"百万美元的五棱星", year:2024, genre:"悬疑 / 动作", duration:"111分钟", rating:9.2, emoji:"⭐", tag:"热门", desc:"怪盗基德与服部平次的巅峰合作，百万美元宝藏。", url:"https://www.bilibili.com/bangumi/play/ep1377259" },
+    { id:28, number:"M28", title:"独眼的残像", year:2025, genre:"悬疑 / 动作", duration:"109分钟", rating:9.2, emoji:"👁️", tag:"热门", desc:"长野县警察的悲壮故事，风林火山篇。", url:"https://www.bilibili.com/bangumi/media/md28228775" },
+    { id:29, number:"M29", title:"高速公路的堕天使", year:2026, genre:"悬疑 / 动作", duration:"109分钟", rating:9.1, emoji:"😇", tag:"最新", desc:"高速公路上的绝密任务，最新剧场版震撼来袭。", url:"https://www.bilibili.com/bangumi/media/md28228775" }
+];
+
+function renderMovies(movieList) {
+    const grid = document.querySelector('.movies-grid');
+    grid.innerHTML = '';
+    movieList.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card fade-in';
+        card.dataset.id = movie.id;
+        card.dataset.title = movie.title;
+        card.dataset.genre = movie.genre;
+        card.dataset.year = movie.year;
+        card.innerHTML = `
+            <div class="movie-poster">
+                <div class="movie-poster-bg" style="background: linear-gradient(135deg, ${getGradient(movie.id)}, ${getGradientEnd(movie.id)});">
+                    ${movie.emoji}
+                    <div class="movie-tag">${movie.tag}</div>
+                    <div class="movie-rating">★ ${movie.rating}</div>
+                    <div class="play-btn">▶</div>
+                </div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-number">剧场版 ${movie.number} · ${movie.year}</div>
+                <div class="movie-title">${movie.title}</div>
+                <div class="movie-meta">
+                    <span>🎭 ${movie.genre}</span>
+                    <span>⏱️ ${movie.duration}</span>
+                </div>
+            </div>
+            <a href="${movie.url}" target="_blank" class="watch-btn" onclick="event.stopPropagation()">🎬 B站观看</a>
+        `;
+        card.addEventListener('click', () => openModal(movie));
+        grid.appendChild(card);
+    });
+    observeFadeInElements();
+}
+
+function getGradient(id) {
+    const g = ['#1a1a2e','#2d132c','#0c0032','#1a0000','#0a1628','#1b0a2e','#0d1a2d','#1a0a2e','#1a0000','#0a0a1a','#0c1a2e','#1a0a1e','#0a0a1a','#0a1a2e','#0a0a1e','#1a0a2e','#0a0a1e','#0a1a2e','#1a0000','#0a0a1a','#0a1a2e','#1a0a2e','#0a0a1e','#0a1a2e','#0a001a','#1a0a2e','#0a1a2e','#0a0a1e','#1a0a2e'];
+    return g[(id-1)%g.length];
+}
+function getGradientEnd(id) {
+    const g = ['#0f3460','#801336','#190061','#3d0000','#1a3a5c','#3d0a5c','#0d4a6e','#2d132c','#6b0000','#1a2744','#1a3a5c','#3d0a5c','#0d4a6e','#0f3460','#6b1a8c','#801336','#c72c41','#0f3460','#6b0000','#1a2744','#1a3a5c','#3d0a5c','#0d4a6e','#0f3460','#6b1a8c','#801336','#c72c41','#0f3460','#6b0000'];
+    return g[(id-1)%g.length];
+}
+
+function openModal(movie) {
+    const overlay = document.getElementById('modalOverlay');
+    const body = document.getElementById('modalBody');
+    body.innerHTML = `
+        <div class="modal-poster" style="background: linear-gradient(135deg, ${getGradient(movie.id)}, ${getGradientEnd(movie.id)});">${movie.emoji}</div>
+        <div class="modal-body">
+            <h2>${movie.title}</h2>
+            <div class="modal-meta">
+                <span>🎬 剧场版 ${movie.number}</span><span>📅 ${movie.year}年</span><span>🎭 ${movie.genre}</span><span>⏱️ ${movie.duration}</span><span>⭐ ${movie.rating}</span><span>🏷️ ${movie.tag}</span>
+            </div>
+            <p class="modal-desc">${movie.desc}</p>
+            <div class="modal-details">
+                <div class="detail-item"><div class="detail-value">${movie.year}</div><div class="detail-label">上映年份</div></div>
+                <div class="detail-item"><div class="detail-value">${movie.duration}</div><div class="detail-label">影片时长</div></div>
+                <div class="detail-item"><div class="detail-value">${movie.rating}</div><div class="detail-label">推荐评分</div></div>
+                <div class="detail-item"><div class="detail-value">${movie.tag}</div><div class="detail-label">推荐标签</div></div>
+            </div>
+            <a href="${movie.url}" target="_blank" class="modal-watch-btn">🎬 前往 Bilibili 观看</a>
+        </div>
+    `;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+let activeFilter = '全部';
+function filterMovies() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.movie-card');
+    let visibleCount = 0;
+    cards.forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const genre = card.dataset.genre.toLowerCase();
+        const movie = movies.find(m => m.title === card.dataset.title);
+        let matchSearch = title.includes(query) || genre.includes(query);
+        let matchFilter = activeFilter==='全部' || (activeFilter==='神作'&&movie.tag==='神作') || (activeFilter==='经典'&&movie.tag==='经典') || (activeFilter==='最新'&&movie.tag==='最新') || (activeFilter==='热门'&&movie.tag==='热门') || (activeFilter==='重磅'&&movie.tag==='重磅');
+        if (matchSearch && matchFilter) { card.classList.remove('hidden'); visibleCount++; } else { card.classList.add('hidden'); }
+    });
+    const countEl = document.getElementById('movieCount');
+    if (countEl) countEl.innerHTML = `共找到 <span>${visibleCount}</span> / ${movies.length} 部剧场版`;
+}
+function setFilter(filter) {
+    activeFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(tab => { tab.classList.remove('active'); if(tab.textContent===filter) tab.classList.add('active'); });
+    filterMovies();
+}
+
+function initNavbar() {
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { if(window.scrollY>50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+}
+function initNavHighlight() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => { if(window.scrollY >= section.offsetTop-100) current = section.getAttribute('id'); });
+        navLinks.forEach(link => { link.classList.remove('active'); if(link.getAttribute('href')===`#${current}`) link.classList.add('active'); });
+    });
+}
+function observeFadeInElements() {
+    const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold:0.1, rootMargin:'0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+}
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if(t) t.scrollIntoView({behavior:'smooth'}); }); });
+}
+function initButtonEffects() {
+    document.querySelectorAll('.btn').forEach(btn => { btn.addEventListener('click', e => { btn.style.transform='scale(0.95)'; setTimeout(()=>{btn.style.transform=''},150); }); });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderMovies(movies);
+    initNavbar(); initNavHighlight(); initSmoothScroll(); initButtonEffects();
+    const si = document.getElementById('searchInput');
+    if(si) si.addEventListener('input', filterMovies);
+    document.getElementById('modalOverlay').addEventListener('click', e => { if(e.target===document.getElementById('modalOverlay')) closeModal(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+    setTimeout(() => { document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible')); }, 100);
+});
+    </script>
+</body>
+</html>
